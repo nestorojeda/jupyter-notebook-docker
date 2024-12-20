@@ -18,6 +18,10 @@ check-env:
 	  echo "Error: PORT is not set in .env"; \
 	  exit 1; \
 	fi
+	@if [ -z "$(JUPYTER_PASSWORD)" ]; then \
+	  echo "Error: JUPYTER_PASSWORD is not set in .env"; \
+	  exit 1; \
+	fi
 	@echo "Environment variables are valid."
 
 # Build the Docker image
