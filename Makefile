@@ -1,15 +1,32 @@
+# Load variables from .env
+include .env
+export $(shell sed 's/=.*//' .env)
+
 # Variables
 IMAGE_NAME = jupyter-server
-CONTAINER_NAME = jupyter_container
-PORT = 8888
+CONTAINER_NAME ?= $(DOCKER_CONTAINER_NAME)  # Default value if not in .env
+PORT ?= $(DOCKER_PORT)                      # Default value if not in .env
+
+# Check required variables
+check-env:
+	@echo "Validating environment variables..."
+	@if [ -z "$(DOCKER_CONTAINER_NAME)" ]; then \
+	  echo "Error: CONTAINER_NAME is not set in .env"; \
+	  exit 1; \
+	fi
+	@if [ -z "$(DOCKER_PORT)" ]; then \
+	  echo "Error: PORT is not set in .env"; \
+	  exit 1; \
+	fi
+	@echo "Environment variables are valid."
 
 # Build the Docker image
-db:
+db: check-env
 	@echo "Building the Docker image..."
 	docker build -t $(IMAGE_NAME) .
 
 # Run the Docker container
-dr:
+dr: check-env
 	@echo "Running the Docker container..."
 	docker run -d --name $(CONTAINER_NAME) -p $(PORT):8888 -v $(PWD):/app $(IMAGE_NAME)
 	@echo "Jupyter Lab is running at http://localhost:$(PORT)"
@@ -28,6 +45,6 @@ dd:
 	docker rmi $(IMAGE_NAME)
 
 # Enter the running container
-de:
+de: check-env
 	@echo "Creating a console inside the container..."
 	docker exec -it $(CONTAINER_NAME) /bin/bash
