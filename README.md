@@ -1,11 +1,12 @@
 # Jupyter Notebook Docker
 
-This repository contains the necessary files to set up a Jupyter Notebook environment using Docker.
+I wanted to explore other alternatives to Google Colab, and have the ability to run Jupyter notebooks on my local computer or in a Github Codespaces. This repository contains the necessary files to set up a Jupyter Notebook environment using Docker.
 
 ## Prerequisites
 
 - Docker installed on your machine
 - Basic knowledge of Docker and Jupyter Notebook
+- Tested in macOS and Windows using WSL
 
 ## Getting Started
 
