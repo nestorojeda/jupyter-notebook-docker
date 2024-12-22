@@ -4,8 +4,8 @@ export $(shell sed 's/=.*//' .env)
 
 # Variables
 IMAGE_NAME = jupyter-server
-CONTAINER_NAME ?= $(DOCKER_CONTAINER_NAME)  # Default value if not in .env
-PORT ?= $(DOCKER_PORT)                      # Default value if not in .env
+CONTAINER_NAME ?= $(DOCKER_CONTAINER_NAME)
+PORT ?= $(DOCKER_PORT)
 
 # Check required variables
 check-env:
@@ -32,6 +32,8 @@ db: check-env
 # Run the Docker container
 dr: check-env
 	@echo "Running the Docker container..."
+	-docker stop $(CONTAINER_NAME) || true
+	-docker rm $(CONTAINER_NAME) || true
 	docker run -d --name $(CONTAINER_NAME) -p $(PORT):8888 -v $(PWD):/app $(IMAGE_NAME)
 	@echo "Jupyter Lab is running at http://localhost:$(PORT)"
 
